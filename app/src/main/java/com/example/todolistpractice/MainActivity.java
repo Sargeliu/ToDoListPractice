@@ -3,6 +3,7 @@ package com.example.todolistpractice;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton buttonAddNote;
     private ArrayList<Note> notes = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,15 +34,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         showNotes();
-    }
-
-    private void initViews() {
-        linearLayoutNotes = findViewById(R.id.linearLayoutNotes);
-        buttonAddNote = findViewById(R.id.buttonAddNote);
+        buttonAddNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = AddNoteActivity.newIntent(MainActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     private void showNotes() {
-        for (Note note : notes) {
+        for (Note note:
+             notes) {
             View view = getLayoutInflater().inflate(
                     R.layout.note_item,
                     linearLayoutNotes,
@@ -54,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
             int colorReId;
             switch (note.getPriority()) {
                 case 0:
-                     colorReId = android.R.color.holo_green_light;
-                     break;
+                    colorReId = android.R.color.holo_green_light;
+                    break;
                 case 1:
                     colorReId = android.R.color.holo_orange_light;
                     break;
@@ -66,5 +69,10 @@ public class MainActivity extends AppCompatActivity {
             textViewNote.setBackgroundColor(color);
             linearLayoutNotes.addView(view);
         }
+    }
+
+    private void initViews() {
+        linearLayoutNotes = findViewById(R.id.linearLayoutNotes);
+        buttonAddNote = findViewById(R.id.buttonAddNote);
     }
 }
