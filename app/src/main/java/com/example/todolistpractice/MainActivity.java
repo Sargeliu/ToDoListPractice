@@ -2,6 +2,7 @@ package com.example.todolistpractice;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout linearLayoutNotes;
     private FloatingActionButton buttonAddNote;
+    private RecyclerView recyclerViewNotes;
+
     private Database database = Database.getInstance();
 
     @Override
@@ -26,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,15 +44,28 @@ public class MainActivity extends AppCompatActivity {
         showNotes();
     }
 
+    private void initViews() {
+        linearLayoutNotes = findViewById(R.id.linearLayoutNotes);
+        buttonAddNote = findViewById(R.id.buttonAddNote);
+        recyclerViewNotes = findViewById(R.id.recyclerViewNotes);
+    }
+
     private void showNotes() {
         linearLayoutNotes.removeAllViews();
-        for (Note note:
-             database.getNotes()) {
+        for (Note note : database.getNotes()
+        ) {
             View view = getLayoutInflater().inflate(
                     R.layout.note_item,
                     linearLayoutNotes,
                     false
             );
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    database.remove(note.getId());
+                    showNotes();
+                }
+            });
             TextView textViewNote = view.findViewById(R.id.textViewNote);
             textViewNote.setText(note.getText());
 
@@ -69,10 +84,5 @@ public class MainActivity extends AppCompatActivity {
             textViewNote.setBackgroundColor(color);
             linearLayoutNotes.addView(view);
         }
-    }
-
-    private void initViews() {
-        linearLayoutNotes = findViewById(R.id.linearLayoutNotes);
-        buttonAddNote = findViewById(R.id.buttonAddNote);
     }
 }
