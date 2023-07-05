@@ -20,6 +20,8 @@ public class AddNoteActivity extends AppCompatActivity {
 
     private Button buttonSave;
 
+    private Database database = Database.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,11 @@ public class AddNoteActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.error_field_empty, Toast.LENGTH_SHORT).show();
         }
         int priority = getPriority();
+        int id = database.getNotes().size();
+        Note note = new Note(id, text, priority);
+        database.add(note);
+
+        finish();
     }
 
     private int getPriority() {
