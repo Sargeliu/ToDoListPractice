@@ -1,9 +1,14 @@
 package com.example.todolistpractice;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.ArrayList;
 
+@Entity(tableName = "notes")
 public class Note {
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String text;
     private int priority;
