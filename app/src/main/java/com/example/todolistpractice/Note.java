@@ -1,6 +1,7 @@
 package com.example.todolistpractice;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
@@ -17,6 +18,11 @@ public class Note {
         this.id = id;
         this.text = text;
         this.priority = priority;
+    }
+
+    @Ignore
+    public Note(String text, int priority) {
+        this(0, text, priority);
     }
 
     public int getId() {
